@@ -50,6 +50,14 @@ module Resque
         end
       end
 
+      def progress
+        unless @queue.respond_to? :progress
+          raise "You need to install resque-progress to use progress"
+        end
+
+        @queue.progress
+      end
+
       def queue
         @queue || ::Resque::Mailer.default_queue_name
       end
@@ -140,13 +148,7 @@ module Resque
         actual_message.send(method_name, *args)
       end
 
-      def progress
-        unless resque.respond_to? :progress
-          raise "You need to install resque-progress to use progress"
-        end
 
-        resque.progress
-      end
     end
   end
 end
